@@ -5,6 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Time Zone Visualizer | Never Setting Sun</title>
     <link rel="icon" type="image/x-icon" href="favicon.svg">
+
+    <meta name="description" content="Planning a meeting with people from all over the world? Does the sun never set
+    on your group of friends? Play with different times and easily see what time could work for everybody!">
+
+    <!-- Facebook Meta Tags -->
+    <meta property="og:url" content="https://theneversettingsun.com">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Visualize multiple time zones at once.">
+    <meta property="og:description" content="Planning a meeting with people from all over the world? Does the sun never set
+    on your group of friends? Play with different times and easily see what time could work for everybody!">
+    <meta property="og:image" content="https://opengraph.b-cdn.net/production/images/e313f80a-91bf-47a5-8935-e38e0ef475dc.jpg?token=fY0ZNmNcOBfWIV7f6S7nBYMy-0D2BSSUQtYBn4dSy-Y&height=628&width=1200&expires=33263132815">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="twitter:domain" content="theneversettingsun.com">
+    <meta property="twitter:url" content="https://theneversettingsun.com">
+    <meta name="twitter:title" content="Visualize Multiple Time Zones at once.">
+    <meta name="twitter:description" content="Planning a meeting with people from all over the world? Does the sun never set
+    on your group of friends? Play with different times and easily see what time could work for everybody!">
+    <meta name="twitter:image" content="https://opengraph.b-cdn.net/production/images/e313f80a-91bf-47a5-8935-e38e0ef475dc.jpg?token=fY0ZNmNcOBfWIV7f6S7nBYMy-0D2BSSUQtYBn4dSy-Y&height=628&width=1200&expires=33263132815">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="location.js"></script>
   </head>
@@ -23,11 +44,11 @@
       <div class="mx-auto max-w-2xl py-32">
         <div class="text-center">
 
-          <div id="modal" class="hidden relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div id="modal" class="hidden dark:bg-slate-800 dark:text-gray-300 relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-                <div id="modal-box" class="relative h-96 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
+                <div id="modal-box" class="relative sm:h-96 transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-sm sm:p-6">
                   <div>
                     <svg id="x" class="hover:cursor-pointer float-right text-gray-500 size-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
@@ -57,7 +78,7 @@
             </div>
           </div>
 
-          <div id="time-modal" class="hidden relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+          <div id="time-modal" class="hidden dark:bg-slate-800 dark:text-gray-300 relative z-10" aria-labelledby="modal-title" role="dialog" aria-modal="true">
             <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true"></div>
             <div class="fixed inset-0 z-10 w-screen overflow-y-auto">
               <div class="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
@@ -97,7 +118,7 @@
 
 
           <h1 class="text-balance text-4xl font-bold tracking-tight dark:text-gray-200 sm:text-5xl">Visualize multiple time zones at once.</h1>
-          <p class="text-xs mt-6">Just click on any time to change it.</p>
+          <p class="text-xs mt-6">Just click on your local time to change it.</p>
 
           <div class="mt-12 mx-auto">
             <div id="location-list">
@@ -108,9 +129,9 @@
                 </div>
                 <p></p>
                 <div id="" class="local-time time inline-flex items-center">
-                  <span id="local-hour" class="hours mr-2 inline-flex items-center rounded-md bg-purple-100 px-2 py-1 text-lg font-medium text-purple-700 hover:cursor-pointer">19</span>
+                  <span id="local-hour" class="hours mr-2 inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-lg font-medium text-green-700 hover:cursor-pointer">19</span>
                   <p class="text-lg font-bold hover:cursor-pointer">:</p>
-                  <span id="local-minute" class="minutes ml-2 inline-flex items-center rounded-md bg-purple-100 px-2 py-1 text-lg font-medium text-purple-700 hover:cursor-pointer">23</span>
+                  <span id="local-minute" class="minutes ml-2 inline-flex items-center rounded-md bg-green-100 px-2 py-1 text-lg font-medium text-green-700 hover:cursor-pointer">23</span>
                 </div>
               </div>
             </div>

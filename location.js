@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", function() {
     var el = document.createElement("option");
     el.textContent = options[i];
     el.value = values[i];
-    el.classList.add("px-4", "py-2", "hover:bg-indigo-600", "hover:text-white", "cursor-pointer")
+    el.classList.add("px-4", "py-2", "hover:bg-indigo-600", "hover:text-white", "cursor-pointer");
     tZOptions.appendChild(el);
   }
 
@@ -78,7 +78,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const timeFlag     = document.getElementById("time-flag");
     const locale       = timeFlag.alt;
     const element      = document.getElementById(locale);
-
     const hours   = hoursInput.value;
     const minutes = minutesInput.value;
 
@@ -98,6 +97,15 @@ document.addEventListener("DOMContentLoaded", function() {
     const hourSpan   = element.querySelector('.hours');
     const minuteSpan = element.querySelector('.minutes');
     const time       = new Date();
+    var regExp       = /[a-zA-Z]/g;
+
+    if (!hours || regExp.test(hours)) {
+      hours = "00";
+    }
+
+    if (!minutes || regExp.test(minutes)) {
+      minutes = "00";
+    }
 
     hourSpan.innerHTML = hours;
     minuteSpan.innerHTML = minutes;
@@ -107,16 +115,23 @@ document.addEventListener("DOMContentLoaded", function() {
     updateOtherTimes(time, element);
   }
 
+  //they're all getting updated in relation to the local time, instead of in relation to the time of the zone which triggered this update
+  //so where are we telling them to update in relation to local time?
+
+  //it's the creation of a Date object. They're always created using the local time zone.
   function updateOtherTimes(time, element) {
     let array = document.getElementsByClassName("time");
 
     for(let i = 0; i < array.length; i++) {
-      const newTime = new Date();
-      newTime.setHours(time.getHours());
-      newTime.setMinutes(time.getMinutes());
-      newTimeString = newTime.toLocaleTimeString('en-UK', { timeZone: array[i].id })
-      array[i].querySelector('.hours').innerHTML = newTimeString.split(":")[0];
-      array[i].querySelector('.minutes').innerHTML = newTimeString.split(":")[1];
+      if (array[i].id != element.id) {
+        const newTime = new Date();
+        newTime.setHours(time.getHours());
+        newTime.setMinutes(time.getMinutes());
+
+        newTimeString = time.toLocaleTimeString('en-UK', { timeZone: array[i].id })
+        array[i].querySelector('.hours').innerHTML = newTimeString.split(":")[0];
+        array[i].querySelector('.minutes').innerHTML = newTimeString.split(":")[1];
+      }
     }
   }
 
@@ -132,34 +147,47 @@ document.addEventListener("DOMContentLoaded", function() {
   }
 
   function addTimeZone(location) {
-    var locationDiv    = document.createElement("div");
-    var firstCol       = document.createElement("div");
-    var midCol         = document.createElement("p");
-    var secondCol      = document.createElement("div");
-    var flag           = document.createElement("img");
-    var locationString = document.createElement("p");
-    var hourSpan       = document.createElement("span");
-    var minuteSpan     = document.createElement("span");
-    var colon          = document.createElement("p");
+    let locationDiv    = document.createElement("div");
+    let firstCol       = document.createElement("div");
+    let midCol         = document.createElement("p");
+    let secondCol      = document.createElement("div");
+    let flag           = document.createElement("img");
+    let locationString = document.createElement("p");
+    let hourSpan       = document.createElement("span");
+    let minuteSpan     = document.createElement("span");
+    let colon          = document.createElement("p");
+    const currentTime  = new Date();
+    let array = document.getElementsByClassName("time");
+
+    //don't do anything (don't add another timezone) if one with this location already exists
+    for (let i = 0; i < array.length; i++) {
+      if (array[i].id == location) {
+        return
+      }
+    }
+
+
+    currentTime.setHours(localHour.innerHTML);
+    currentTime.setMinutes(localMinute.innerHTML);
 
     locationDiv.classList.add("mt-6", "grid", "gap-x-4", "sm:gap-x-24", "grid-cols-3");
     firstCol.classList.add("inline-flex", "items-center");
     secondCol.classList.add("time", "inline-flex", "items-center");
     secondCol.id = location;
-    secondCol.addEventListener("click", function() {
-      openTimeModal(location);
-    });
+    // secondCol.addEventListener("click", function() {
+    //   openTimeModal(location);
+    // });
     flag.classList.add("h-6", "w-auto", "rounded-sm");
     flag.src = "flags/" + location.split("/")[1].replace("_", " ").toLowerCase() +  ".svg";
     flag.alt = "flag";
     locationString.innerHTML = location.split("/")[1].replace("_", " ");
     locationString.classList.add("ml-4", "text-2xl");
-    hourSpan.classList.add("hours", "mr-2", "inline-flex", "items-center", "rounded-md", "bg-purple-100", "px-2", "py-1", "text-lg", "font-medium", "text-purple-700", "hover:cursor-pointer");
-    hourSpan.innerHTML = timeNow.toLocaleTimeString('en-UK', { timeZone: location }).split(":")[0];
+    hourSpan.classList.add("hours", "mr-2", "inline-flex", "items-center", "rounded-md", "bg-purple-100", "px-2", "py-1", "text-lg", "font-medium", "text-purple-700");
+    hourSpan.innerHTML = currentTime.toLocaleTimeString('en-UK', { timeZone: location }).split(":")[0];
     colon.innerHTML    = ":";
     colon.classList.add("text-lg", "font-bold");
-    minuteSpan.classList.add("minutes", "ml-2", "inline-flex", "items-center", "rounded-md", "bg-purple-100", "px-2", "py-1", "text-lg", "font-medium", "text-purple-700", "hover:cursor-pointer");
-    minuteSpan.innerHTML = timeNow.toLocaleTimeString('en-UK', { timeZone: location }).split(":")[1];
+    minuteSpan.classList.add("minutes", "ml-2", "inline-flex", "items-center", "rounded-md", "bg-purple-100", "px-2", "py-1", "text-lg", "font-medium", "text-purple-700");
+    minuteSpan.innerHTML = currentTime.toLocaleTimeString('en-UK', { timeZone: location }).split(":")[1];
     firstCol.appendChild(flag);
     firstCol.appendChild(locationString);
     secondCol.appendChild(hourSpan);
