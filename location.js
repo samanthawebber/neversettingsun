@@ -14,6 +14,7 @@ document.addEventListener("DOMContentLoaded", function() {
   const timeModal      = document.getElementById("time-modal");
   const timeModalBox   = document.getElementById("time-modal-box");
   const setTimeButton  = document.getElementById("set-time-button");
+  const setCurrentTimeButton = document.getElementById("set-current-time-button");
   const input          = document.getElementById("timezone-search");
   const tZOptions      = document.getElementById("timezone-options");
   const tZDropdown     = document.getElementById("timezone-dropdown");
@@ -28,8 +29,11 @@ document.addEventListener("DOMContentLoaded", function() {
   localFlag.src             = "flags/" + local.toLowerCase() +  ".svg";
 
   //populate dropdown with timezones
-  const options = ["New York", "Seoul", "Copenhagen", "Budapest", "Tallinn", "Calcutta"];
-  const values  = ["America/New_York", "Asia/Seoul", "Europe/Copenhagen", "Europe/Budapest", "Europe/Tallinn", "Asia/Calcutta"];
+  const options = ["New York", "Seoul", "Copenhagen", "Budapest", "Tallinn", "Calcutta", "Berlin", "Dubai", "Buenos Aires", "Kabul",
+                   "Andorra", "Tirane"];
+  const values  = ["America/New_York", "Asia/Seoul", "Europe/Copenhagen", "Europe/Budapest",
+                   "Europe/Tallinn", "Asia/Calcutta", "Europe/Berlin", "Asia/Dubai",
+                   "America/Argentina/Buenos_Aires", "Asia/Kabul", "Europe/Andorra", "Europe/Tirane"];
 
   for(var i = 0; i < options.length; i++) {
     var el = document.createElement("option");
@@ -71,6 +75,18 @@ document.addEventListener("DOMContentLoaded", function() {
   localTime.addEventListener("click", function() {
     openTimeModal(Intl.DateTimeFormat().resolvedOptions().timeZone);
   });
+
+  setCurrentTimeButton.addEventListener("click", function() {
+    const currentTime = new Date();
+    const timeFlag    = document.getElementById("time-flag");
+    const locale      = timeFlag.alt;
+    const element     = document.getElementById(locale);
+    const hours       = currentTime.getHours();
+    const minutes     = currentTime.getMinutes();
+
+    timeModal.classList.toggle("hidden");
+    setTime(hours, minutes, element);
+  })
 
   setTimeButton.addEventListener("click", function() {
     const hoursInput   = document.getElementById("hours-input");
@@ -157,7 +173,8 @@ document.addEventListener("DOMContentLoaded", function() {
     let minuteSpan     = document.createElement("span");
     let colon          = document.createElement("p");
     const currentTime  = new Date();
-    let array = document.getElementsByClassName("time");
+    let array          = document.getElementsByClassName("time");
+    let displayName    = location.split("/")[location.split("/").length - 1].replace("_", " "); //some countries have more than one slash and incl. continent
 
     //don't do anything (don't add another timezone) if one with this location already exists
     for (let i = 0; i < array.length; i++) {
@@ -178,10 +195,10 @@ document.addEventListener("DOMContentLoaded", function() {
     //   openTimeModal(location);
     // });
     flag.classList.add("h-6", "w-auto", "rounded-sm");
-    flag.src = "flags/" + location.split("/")[1].replace("_", " ").toLowerCase() +  ".svg";
+    flag.src = "flags/" + displayName.toLowerCase() +  ".svg";
     flag.alt = "flag";
-    locationString.innerHTML = location.split("/")[1].replace("_", " ");
-    locationString.classList.add("ml-4", "text-2xl");
+    locationString.innerHTML = displayName;
+    locationString.classList.add("ml-4", "text-2xl", "whitespace-nowrap");
     hourSpan.classList.add("hours", "mr-2", "inline-flex", "items-center", "rounded-md", "bg-purple-100", "px-2", "py-1", "text-lg", "font-medium", "text-purple-700");
     hourSpan.innerHTML = currentTime.toLocaleTimeString('en-UK', { timeZone: location }).split(":")[0];
     colon.innerHTML    = ":";
