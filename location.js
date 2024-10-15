@@ -139,9 +139,9 @@ const options  = [
 ];
 
   for(var i = 0; i < options.length; i++) {
-    var el = document.createElement("option");
+    var el = document.createElement("li");
     el.textContent = options[i];
-    el.value = values[i];
+    el.setAttribute('data-value', values[i]);
     el.classList.add("px-4", "py-2", "hover:bg-indigo-600", "hover:text-white", "cursor-pointer");
     tZOptions.appendChild(el);
   }
@@ -162,7 +162,7 @@ const options  = [
   input.addEventListener("keyup", function() {
     let filter = input.value.toLowerCase();
     let ul = document.getElementById("timezone-options");
-    let opt = ul.getElementsByTagName('option');
+    let opt = ul.getElementsByTagName('li');
 
     for (let i = 0; i < opt.length; i++) {
       let textValue = opt[i].textContent || opt[i].innerText;
@@ -254,14 +254,14 @@ const options  = [
     }
   }
 
-  const opt = tZOptions.getElementsByTagName('option');
+  const opt = tZOptions.getElementsByTagName('li');
   for(let i = 0; i < opt.length; i++) {
     opt[i].addEventListener("click", function() {
       modal.classList.toggle("hidden");
     });
 
     opt[i].addEventListener("click", function(event) {
-      addTimeZone(event.target.value); // Access the text or any attribute of the clicked li
+      addTimeZone(event.target.getAttribute('data-value')); // Access the text or any attribute of the clicked li
     });
   }
 
